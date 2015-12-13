@@ -373,11 +373,25 @@ int wmain(int argc, wchar_t* argv[])
                 //
                 //  Generate tone data in the buffer.
                 //
+                int NumberOfChanges = 20;
+                int Frequencies [NumberOfChanges] = { }; 
+                for(int i = 0; i < NumberOfChanges; i++)
+                {
+                    Frequencies[i] = TargetFrequency + ((i - 10) * 10);
+                    // Should start about 10 hz below target frequency and end 10hz above.
+                }
+                UINT32 LengthOfEachRender = BufferLength / NumberOfChanges;
                 switch (renderer->SampleType())
                 {
                 case CWASAPIRenderer::SampleTypeFloat:
-                    GenerateSineSamples<float>(renderBuffer->_Buffer, renderBuffer->_BufferLength, TargetFrequency,
-                                                renderer->ChannelCount(), renderer->SamplesPerSecond(), &theta);
+                    for(int i = 0; i < NumberOfChanges) {
+                        GenerateSineSamples<float>(renderBuffer->_Buffer, renderBuffer->LengthOfEachRender,
+                                                 Frequencies[i], renderer->ChannelCount(), renderer->SamplesPerSecond(),
+                                                 &theta);
+                    }
+
+                    //GenerateSineSamples<float>(renderBuffer->_Buffer, renderBuffer->_BufferLength, TargetFrequency,
+                                                //renderer->ChannelCount(), renderer->SamplesPerSecond(), &theta);
                     break;
                 case CWASAPIRenderer::SampleType16BitPCM:
                     GenerateSineSamples<short>(renderBuffer->_Buffer, renderBuffer->_BufferLength, TargetFrequency,
