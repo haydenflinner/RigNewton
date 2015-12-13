@@ -389,13 +389,17 @@ int wmain(int argc, wchar_t* argv[])
                                                  Frequencies[i], renderer->ChannelCount(), renderer->SamplesPerSecond(),
                                                  &theta);
                     }
-
                     //GenerateSineSamples<float>(renderBuffer->_Buffer, renderBuffer->_BufferLength, TargetFrequency,
                                                 //renderer->ChannelCount(), renderer->SamplesPerSecond(), &theta);
                     break;
                 case CWASAPIRenderer::SampleType16BitPCM:
-                    GenerateSineSamples<short>(renderBuffer->_Buffer, renderBuffer->_BufferLength, TargetFrequency,
-                                                renderer->ChannelCount(), renderer->SamplesPerSecond(), &theta);
+                    for(int i = 0; i < NumberOfChanges) {
+                        GenerateSineSamples<short>(renderBuffer->_Buffer, renderBuffer->LengthOfEachRender,
+                                                 Frequencies[i], renderer->ChannelCount(), renderer->SamplesPerSecond(),
+                                                 &theta);
+                    }
+                    //GenerateSineSamples<short>(renderBuffer->_Buffer, renderBuffer->_BufferLength, TargetFrequency,
+                     //                           renderer->ChannelCount(), renderer->SamplesPerSecond(), &theta);
                     break;
                 }
                 //
